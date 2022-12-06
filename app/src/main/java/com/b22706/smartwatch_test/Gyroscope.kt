@@ -1,7 +1,5 @@
 package com.b22706.smartwatch_test
 
-import android.util.Log
-import android.widget.Toast
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
 import java.io.FileWriter
@@ -10,9 +8,8 @@ import java.util.*
 import java.util.stream.IntStream.range
 import kotlin.math.sqrt
 
-class Acceleration {
+class Gyroscope {
     var queue: LinkedList<AccelerationData> = LinkedList() //キュー
-    private val hz: Int = 50
 
     data class AccelerationData(
         val time: Long,
@@ -52,7 +49,7 @@ class Acceleration {
         //CSVファイルの書き出し
         try{
             //書込み先指定
-            val writer = FileWriter("${path}/${fileName}-acc.csv")
+            val writer = FileWriter("$path/$fileName-gyro.csv")
 
             //書き込み準備
             val csvPrinter = CSVPrinter(
@@ -79,8 +76,7 @@ class Acceleration {
             csvPrinter.close()
             return true
         }catch (e: IOException){
-            //エラー処理d
-            Log.d("csvWrite", "${e}:${e.message!!}")
+            //エラー処理
             return false
         }
     }

@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, MessageClient.OnM
     private val gyroscope: Gyroscope = Gyroscope()
     private val watchGyroscope: WatchGyroscope = WatchGyroscope()
     private val heartRate: HeartRate = HeartRate()
+    private val pressure = Pressure()
 
     private var fileName = "smartWatch"
     private var csvAdd: Boolean = false
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, MessageClient.OnM
                 gyroscope.queueReset()
                 watchGyroscope.queueReset()
                 heartRate.queueReset()
+                pressure.queueReset()
                 binding.csvWriteButton.text = "csv出力"
                 csvAdd = true
             }
@@ -84,8 +86,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener, MessageClient.OnM
         // センサを設定
         val acc = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
         val gyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        val pressure = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
         sensorManager.registerListener(this, acc, SensorManager.SENSOR_DELAY_GAME)
         sensorManager.registerListener(this, gyro, SensorManager.SENSOR_DELAY_GAME)
+        sensorManager.registerListener(this, pressure, SensorManager.SENSOR_DELAY_GAME)
     }
 
     override fun onPause() {
@@ -127,6 +131,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener, MessageClient.OnM
 
             //データ追加
             if(csvAdd) gyroscope.queueAdd(System.currentTimeMillis(),x,y,z)
+        }
+
+        if(event.sensor.type == Sensor.TYPE_PRESSURE){
+            //加速度センサデータを取得
+            val sensorVal = event.values.clone()
+
+            //数値を表示
+
+            //データ追加
+            if(csvAdd) pressure.queueAdd(System.currentTimeMillis(),sensorVal[0])
         }
     }
 
@@ -200,5 +214,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener, MessageClient.OnM
         watchAcceleration.csvWriter(fileName,app.csvFolderPath).let { if(!it) Log.d("csvWrite","defeat") }
         watchGyroscope.csvWriter(fileName,app.csvFolderPath).let { if(!it) Log.d("csvWrite","defeat") }
         heartRate.csvWriter(fileName,app.csvFolderPath).let { if(!it) Log.d("csvWrite","defeat") }
+        pressure.csvWriter(fileName,app.csvFolderPath).let { if(!it) Log.d("csvWrite","defeat") }
     }
 }

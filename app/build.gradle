@@ -35,9 +35,13 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.wear:wear:1.2.0'
     implementation 'com.google.android.support:wearable:2.9.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.6.1'
     compileOnly 'com.google.android.wearable:wearable:2.9.0'
 
     implementation 'org.apache.commons:commons-csv:1.8'
     implementation 'com.opencsv:opencsv:5.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 }
