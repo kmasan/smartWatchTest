@@ -58,7 +58,7 @@ class CsvListAdapter(val appContext: Context, private val csvFolderPath: String)
             // アップロード完了時の処理
             @SuppressLint("SetTextI18n")
             override fun onSuccess(res: String) {
-                holder.button.text = "success"
+                //holder.button.text = "success"
                 holder.button.isClickable = false
                 Log.d("onFileSelect.onSuccess",res)
             }
@@ -66,7 +66,7 @@ class CsvListAdapter(val appContext: Context, private val csvFolderPath: String)
             // アップロード失敗時の処理
             @SuppressLint("SetTextI18n")
             override fun onError(res: String?) {
-                holder.button.text = "defeat"
+                //holder.button.text = "defeat"
                 holder.button.isClickable = false
                 Log.d("onFileSelect.onError",res!!)
             }
