@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -56,18 +57,20 @@ class CsvListAdapter(val appContext: Context, private val csvFolderPath: String)
         postData.run(object : ApiResult {
 
             // アップロード完了時の処理
-            @SuppressLint("SetTextI18n")
+            //@SuppressLint("SetTextI18n")
             override fun onSuccess(res: String) {
-                //holder.button.text = "success"
+                //holder.button.text = R.string.post_succsess.toString()
                 holder.button.isClickable = false
+                holder.button.alpha = 0F
                 Log.d("onFileSelect.onSuccess",res)
             }
 
             // アップロード失敗時の処理
-            @SuppressLint("SetTextI18n")
+            //@SuppressLint("SetTextI18n")
             override fun onError(res: String?) {
                 //holder.button.text = "defeat"
-                holder.button.isClickable = false
+                //holder.button.isClickable = false
+                holder.button.alpha = 0.7F
                 Log.d("onFileSelect.onError",res!!)
             }
         })

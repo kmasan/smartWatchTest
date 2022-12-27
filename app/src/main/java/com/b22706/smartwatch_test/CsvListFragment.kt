@@ -23,7 +23,7 @@ class CsvListFragment: Fragment() {
         super.onCreate(savedInstanceState)
         val folder = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString(), "csv")
         csvFolderPath = folder.path
-        csvAdapter = CsvListAdapter(requireActivity(), csvFolderPath)
+        csvAdapter = CsvListAdapter(requireContext(), csvFolderPath)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

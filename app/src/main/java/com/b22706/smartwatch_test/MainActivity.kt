@@ -72,9 +72,9 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
                 sensorManager.registerListener(this, gyro, SensorManager.SENSOR_DELAY_GAME)
                 sensorManager.registerListener(this, heart, SensorManager.SENSOR_DELAY_NORMAL) //
                 sensorManager.registerListener(this, acc, SensorManager.SENSOR_DELAY_GAME) //50Hz
-                Log.d("sensor","heart:"+heart)
-                Log.d("sensor","lAcc:"+lAcc)
-                Log.d("sensor","acc:"+acc)
+                Log.d("sensor", "heart:$heart")
+                Log.d("sensor", "lAcc:$lAcc")
+                Log.d("sensor", "acc:$acc")
             }else{
                 sensorManager.unregisterListener(this)
             }
