@@ -61,16 +61,18 @@ class CsvListAdapter(val appContext: Context, private val csvFolderPath: String)
             override fun onSuccess(res: String) {
                 //holder.button.text = R.string.post_succsess.toString()
                 holder.button.isClickable = false
-                holder.button.alpha = 0F
+                holder.button.alpha = 0.1F
                 Log.d("onFileSelect.onSuccess",res)
             }
 
             // アップロード失敗時の処理
             //@SuppressLint("SetTextI18n")
+            @SuppressLint("ResourceAsColor")
             override fun onError(res: String?) {
                 //holder.button.text = "defeat"
                 //holder.button.isClickable = false
                 holder.button.alpha = 0.7F
+                holder.button.setBackgroundColor(android.support.wearable.R.color.red_a200)
                 Log.d("onFileSelect.onError",res!!)
             }
         })

@@ -32,10 +32,10 @@ class CsvListFragment: Fragment() {
         binding = CsvListBinding.inflate(inflater, container, false)
 
 
-        Log.d("onCreateView", "check RecycleView")
+        //Log.d("onCreateView", "check RecycleView")
         // Set the csvAdapter
         val recyclerView = binding.csvListView
-        Log.d("onCreateView", recyclerView.toString())
+        //Log.d("onCreateView", recyclerView.toString())
         with(recyclerView) {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)
@@ -45,10 +45,10 @@ class CsvListFragment: Fragment() {
         }
 
         binding.reloadButton.setOnClickListener {
-            Log.d("CsvListFragment", "isClick")
+            //Log.d("CsvListFragment", "isClick")
             File(csvFolderPath).list()?.let {
                 submitList(it.toList())
-                Log.d("CsvListFragment", it.toList().toString())
+                //Log.d("CsvListFragment", it.toList().toString())
             }
         }
 

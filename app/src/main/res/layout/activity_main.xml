@@ -102,6 +102,15 @@
                 android:text="ファイル名自動"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+            <Switch
+                android:id="@+id/rlSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="48dp"
+                android:text="左"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
             <fragment
                 android:id="@+id/fragment_list"
                 android:name="com.b22706.smartwatch_test.CsvListFragment"

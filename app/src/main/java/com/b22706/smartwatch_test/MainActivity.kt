@@ -80,6 +80,15 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
             }
         }
 
+        //
+        binding.rlSwitch.setOnClickListener {
+            if(binding.rlSwitch.isChecked){
+                binding.rlSwitch.text = "右"
+            }else{
+                binding.rlSwitch.text = "左"
+            }
+        }
+
         binding.csvCreateButton.setOnClickListener {
             if(csvAdd){
                 csvWrite(binding.csvFileNameText.text.toString())
@@ -184,10 +193,18 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
     }
 
     private fun csvWrite(fileName: String){
+        Toast.makeText(
+            this,
+            "csv writing",
+            Toast.LENGTH_LONG
+        ).show()
         val fName = when(binding.fNameSwitch.isChecked){
             true -> cnvDate(Date(System.currentTimeMillis()))
             else -> fileName
-        }
+        }.plus(when(binding.rlSwitch.isChecked){
+            true -> "R"
+            else -> "L"
+        })
         acceleration.csvWriter(csvFolderPath,fName).let {
             when(it){
                 true ->{
@@ -214,7 +231,7 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
 
     private fun cnvDate(date: Date): String {
         //取得する日時のフォーマットを指定
-        val df: DateFormat = SimpleDateFormat("yyyy:MM:dd'T'HH:mm:ss", Locale.JAPAN)
+        val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss", Locale.JAPAN)
 
         //日時を指定したフォーマットで取得
         return df.format(date)
