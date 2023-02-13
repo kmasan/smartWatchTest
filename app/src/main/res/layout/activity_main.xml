@@ -117,11 +117,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragment_upload"
-                android:name="com.b22706.smartwatch_test.FileUploadFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+<!--            <androidx.fragment.app.FragmentContainerView-->
+<!--                android:id="@+id/fragment_upload"-->
+<!--                android:name="com.b22706.smartwatch_test.FileUploadFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent" />-->
 
         </LinearLayout>
     </ScrollView>

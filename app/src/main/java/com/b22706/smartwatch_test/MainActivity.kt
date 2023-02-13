@@ -9,9 +9,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.icu.text.DateFormat
 import android.icu.text.SimpleDateFormat
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
@@ -72,15 +70,12 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
                 sensorManager.registerListener(this, gyro, SensorManager.SENSOR_DELAY_GAME)
                 sensorManager.registerListener(this, heart, SensorManager.SENSOR_DELAY_NORMAL) //
                 sensorManager.registerListener(this, acc, SensorManager.SENSOR_DELAY_GAME) //50Hz
-                Log.d("sensor", "heart:$heart")
-                Log.d("sensor", "lAcc:$lAcc")
-                Log.d("sensor", "acc:$acc")
             }else{
                 sensorManager.unregisterListener(this)
             }
         }
 
-        //
+        // 装着側判別用
         binding.rlSwitch.setOnClickListener {
             if(binding.rlSwitch.isChecked){
                 binding.rlSwitch.text = "右"
@@ -89,6 +84,7 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
             }
         }
 
+        // csvの出力
         binding.csvCreateButton.setOnClickListener {
             if(csvAdd){
                 csvWrite(binding.csvFileNameText.text.toString())
@@ -153,7 +149,7 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
             //データ追加
             if(csvAdd) acceleration.queueAdd(System.currentTimeMillis(),x,y,z)
             //データ送信
-            makePushData(sensorVal, "acc")
+//            makePushData(sensorVal, "acc")
         }
 
         if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
@@ -172,7 +168,7 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
             //データ追加
             if(csvAdd) gyroscope.queueAdd(System.currentTimeMillis(),x,y,z)
             //データ送信
-            makePushData(sensorVal, "gyroscope")
+//            makePushData(sensorVal, "gyroscope")
         }
 
         if(event.sensor.type == Sensor.TYPE_HEART_RATE){//TYPE_HEART_RATE
@@ -184,7 +180,7 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
 
             if(csvAdd) heartRate.queueAdd(System.currentTimeMillis(), sensorVal[0])
             //データ送信
-            makePushData(sensorVal, "heartRate")
+//            makePushData(sensorVal, "heartRate")
         }
     }
 
@@ -196,37 +192,40 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
         Toast.makeText(
             this,
             "csv writing",
-            Toast.LENGTH_LONG
+            Toast.LENGTH_SHORT
         ).show()
         val fName = when(binding.fNameSwitch.isChecked){
             true -> cnvDate(Date(System.currentTimeMillis()))
-            else -> fileName
+            false -> fileName
         }.plus(when(binding.rlSwitch.isChecked){
             true -> "R"
-            else -> "L"
+            false -> "L"
         })
-        acceleration.csvWriter(csvFolderPath,fName).let {
-            when(it){
-                true ->{
-                    Toast.makeText(
-                        this,
-                        "csv success",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                false -> {
-                    Toast.makeText(
-                        this,
-                        "csv defeat",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.d("csvWrite","defeat")
+
+        // スレッド処理
+        Handler(Looper.getMainLooper()).post {
+            acceleration.csvWriter(csvFolderPath, fName).let {
+                when (it) {
+                    true -> {
+                        Toast.makeText(
+                            this,
+                            "csv success",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    false -> {
+                        Toast.makeText(
+                            this,
+                            "csv defeat",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.d("csvWrite", "defeat")
+                    }
                 }
             }
-
+            gyroscope.csvWriter(csvFolderPath, fName).let { if (!it) Log.d("csvWrite", "defeat") }
+            heartRate.csvWriter(csvFolderPath, fName).let { if (!it) Log.d("csvWrite", "defeat") }
         }
-        gyroscope.csvWriter(csvFolderPath,fName).let { if(!it) Log.d("csvWrite","defeat") }
-        heartRate.csvWriter(csvFolderPath,fName).let { if(!it) Log.d("csvWrite","defeat") }
     }
 
     private fun cnvDate(date: Date): String {
