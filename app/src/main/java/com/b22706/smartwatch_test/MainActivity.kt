@@ -87,13 +87,15 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
         // csvの出力
         binding.csvCreateButton.setOnClickListener {
             if(csvAdd){
-                csvWrite(binding.csvFileNameText.text.toString())
+                //csvWrite(binding.csvFileNameText.text.toString())
+                stopCsvWrite()
                 binding.csvCreateButton.text = "csv入力"
                 csvAdd = false
             }else{
                 acceleration.queueReset()
                 gyroscope.queueReset()
                 heartRate.queueReset()
+                startCsvWrite(binding.csvFileNameText.text.toString())
                 binding.csvCreateButton.text = "csv出力"
                 csvAdd = true
             }
@@ -226,6 +228,39 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
             gyroscope.csvWriter(csvFolderPath, fName).let { if (!it) Log.d("csvWrite", "defeat") }
             heartRate.csvWriter(csvFolderPath, fName).let { if (!it) Log.d("csvWrite", "defeat") }
         }
+    }
+
+    private fun startCsvWrite(fileName: String){
+        val fName = when(binding.fNameSwitch.isChecked){
+            true -> cnvDate(Date(System.currentTimeMillis()))
+            false -> fileName
+        }.plus(when(binding.rlSwitch.isChecked){
+            true -> "R"
+            false -> "L"
+        })
+
+        acceleration.csvWriterDeque(csvFolderPath, fName).let {
+            when(it){
+                true -> Toast.makeText(
+                    this,
+                    "csv writing",
+                    Toast.LENGTH_SHORT
+                ).show()
+                false -> Toast.makeText(
+                    this,
+                    "csv writing defeat",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        gyroscope.csvWriterDeque(csvFolderPath, fName)
+        heartRate.csvWriterDeque(csvFolderPath, fName)
+    }
+
+    private fun stopCsvWrite(){
+        acceleration.csvRun = false
+        gyroscope.csvRun = false
+        heartRate.csvRun = false
     }
 
     private fun cnvDate(date: Date): String {
