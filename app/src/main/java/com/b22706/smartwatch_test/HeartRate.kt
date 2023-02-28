@@ -67,7 +67,7 @@ class HeartRate {
         //CSVファイルの書き出し
         try{
             //書込み先指定
-            val writer = FileWriter("${path}/${fileName}-acc.csv")
+            val writer = FileWriter("${path}/${fileName}-heart.csv")
 
             //書き込み準備
             val csvPrinter = CSVPrinter(

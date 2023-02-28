@@ -91,7 +91,7 @@ class Gyroscope {
         //CSVファイルの書き出し
         try{
             //書込み先指定
-            val writer = FileWriter("${path}/${fileName}-acc.csv")
+            val writer = FileWriter("${path}/${fileName}-gyro.csv")
 
             //書き込み準備
             val csvPrinter = CSVPrinter(

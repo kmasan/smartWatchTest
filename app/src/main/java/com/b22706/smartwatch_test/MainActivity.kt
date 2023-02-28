@@ -261,6 +261,11 @@ class MainActivity : FragmentActivity(), SensorEventListener, AmbientModeSupport
         acceleration.csvRun = false
         gyroscope.csvRun = false
         heartRate.csvRun = false
+        Toast.makeText(
+            this,
+            "csv stop",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun cnvDate(date: Date): String {
